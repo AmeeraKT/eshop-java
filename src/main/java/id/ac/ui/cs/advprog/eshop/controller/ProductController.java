@@ -17,21 +17,22 @@ public class ProductController {
     private ProductService service;
 
     @GetMapping("/create")
-    public String createProductPage (Model model) {
+    public String createProductPage(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
-        return "createProduct";
+        return "CreateProduct";
     }
 
     @PostMapping("/create")
-    public String createProductPost (@ModelAttribute Product product, Model model) {
+    public String createProductPost(@ModelAttribute Product product, Model model) {
         service.create(product);
         return "redirect:list";
     }
 
     @GetMapping("/list")
-    public String productListPage (Model model) {
+    public String listProduct(Model model) {
         List<Product> allProducts = service.findAll();
-        model.addAttribute("products", allProducts); 		return "productList";
+        model.addAttribute("products", allProducts);
+        return "ProductList";
     }
 }
