@@ -44,7 +44,6 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.10.0")
 }
 
-
 tasks.register<Test>("unitTest") {
     description = "Runs unit tests."
     group = "verification"
