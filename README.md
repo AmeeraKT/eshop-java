@@ -20,9 +20,11 @@ You already implemented two new features using Spring Boot. Check again your sou
     any comments because I could tell what each function does and to avoid clutter.
     Additionally, I added empty lines between each function. I even tried to make the
     code simple as much as I can so that it is easy to understand and makes it
-    less cluttered. If there was any mistake in my code, I did research on what I 
+    less cluttered.
+    If there was any mistake in my code, I did research on what I 
     could do to fix it instead of commenting it out. If I felt there were mistakes
-    in the code I compared my code with the original source code from the module and fixed any syntax mistakes.
+    in the code I compared my code with the original source code from the module
+    and fixed any syntax mistakes.
 ```
 ### Reflection 2
 ```
