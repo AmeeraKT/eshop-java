@@ -15,7 +15,6 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-
     @Override
     public Product create(Product product) {
 
@@ -29,11 +28,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product update(Product product) {
-        return productRepository.update(product);
-    }
-
-    @Override
     public List<Product> findAll() {
         Iterator<Product> productIterator = productRepository.findAll();
         List<Product> allProduct = new ArrayList<>();
@@ -41,4 +35,13 @@ public class ProductServiceImpl implements ProductService {
         return allProduct;
     }
 
+    @Override
+    public Product update(Product product) {
+        return productRepository.update(product);
+    }
+
+    @Override
+    public Product delete(String id) {
+        return productRepository.delete(id);
+    }
 }
