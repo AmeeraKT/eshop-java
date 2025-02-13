@@ -25,18 +25,24 @@ public class ProductRepository {
     }
 
     public Product update(Product updatedProduct) {
-        Optional<Product> existingProduct = productData.stream()
-                .filter(p -> p.getProductId().equals(updatedProduct.getProductId()))
-                .findFirst();
-
-        existingProduct.ifPresent(product -> {
-            int index = productData.indexOf(product);
-            productData.set(index, updatedProduct);
-        });
-
-        return existingProduct.orElse(null);
+        for (Product product : productData) {
+            if (product.getProductId().equals(updatedProduct.getProductId())) {
+                productData.set(productData.indexOf(product), updatedProduct);
+                return updatedProduct;
+            }
+        }
+        return null;
     }
 
+    public Product delete(String id) {
+        for (Product product : productData) {
+            if (product.getProductId().equals(id)) {
+                productData.remove(product);
+                return product;
+            }
+        }
+        return null;
+    }
 
     public Iterator<Product> findAll() {
         return productData.iterator();
