@@ -5,7 +5,7 @@
   <title>ADV Shop</title>
   <link rel="stylesheet" th:href="@{/css/styles.css}">
   <style>
-    /* Centering content */
+
     body {
       display: flex;
       flex-direction: column;
@@ -16,30 +16,17 @@
       overflow: hidden;
     }
 
-    /* Styling the headings */
     h3 {
       font-size: 35px;
       font-weight: bold;
       text-align: center;
-      opacity: 0;
-      transform: translateX(100px);
-      animation: slideIn 1s ease-in-out forwards;
     }
 
-    h3:nth-child(1) { animation-delay: 0.2s; } /* "Welcome" */
-    h3:nth-child(2) { animation-delay: 0.5s; } /* "to ADV Shop" */
-
-    /* Container for buttons */
     .button-container {
       display: flex;
       gap: 20px;
-      opacity: 0;
-      transform: translateX(-100px);
-      animation: slideIn 1s ease-in-out forwards;
-      animation-delay: 1s;
     }
 
-    /* Button styling */
     .basic-button {
       color: white;
       background-color: #3f7c71;
@@ -49,24 +36,19 @@
       font-size: 18px;
       font-weight: bold;
       text-decoration: none;
-      transition: background 0.3s ease;
     }
 
     .basic-button:hover {
+      color: white;
       background-color: #2d5c54;
+      border: none;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      text-decoration: none;
     }
 
-    /* Animation */
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateX(100px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
   </style>
 </head>
 <body>
