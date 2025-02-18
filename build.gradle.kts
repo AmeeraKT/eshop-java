@@ -67,17 +67,13 @@ tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
 
-// exclude functional tests
-tasks.test {
-    useJUnitPlatform()
-
+tasks.named<Test>("test") {
     filter {
         excludeTestsMatching("*FunctionalTest")
     }
-
-    finalizedBy(tasks.jacocoTestReport)
+    finalizedBy("jacocoTestReport") // Ensure JaCoCo always runs
 }
 
-tasks.jacocoTestReport {
+tasks.named<JacocoReport>("jacocoTestReport") {
     dependsOn(tasks.test)
 }
