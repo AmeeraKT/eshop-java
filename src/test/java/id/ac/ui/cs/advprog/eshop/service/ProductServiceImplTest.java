@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
-class ProductServiceImplTest {
+public class ProductServiceImplTest {
 
 
     @Mock
@@ -27,21 +27,21 @@ class ProductServiceImplTest {
 
     @InjectMocks
     private ProductServiceImpl productService;
-    private Product testProductOne;
-    private Product testProductTwo;
+    private Product testProduct1;
+    private Product testProduct2;
 
 
     @BeforeEach
     void setUp() {
-        testProductOne = new Product();
-        testProductOne.setProductName("Milo Dinosaur");
-        testProductOne.setProductQuantity(50);
-        testProductOne.setProductId("R44444WR");
+        testProduct1 = new Product();
+        testProduct1.setProductName("Milo Dinosaur");
+        testProduct1.setProductQuantity(50);
+        testProduct1.setProductId("R44444WR");
 
-        testProductTwo = new Product();
-        testProductTwo.setProductName("Marie Biscuit Tea");
-        testProductTwo.setProductQuantity(25);
-        testProductTwo.setProductId("M4444R13");
+        testProduct2 = new Product();
+        testProduct2.setProductName("Marie Biscuit Tea");
+        testProduct2.setProductQuantity(25);
+        testProduct2.setProductId("M4444R13");
     }
 
     @Test
@@ -56,7 +56,7 @@ class ProductServiceImplTest {
 
     @Test
     void testFindById() {
-        when(productRepository.findById("R44444WR")).thenReturn(testProductOne);
+        when(productRepository.findById("R44444WR")).thenReturn(testProduct1);
         Product result = productService.findById("R44444WR");
 
         assertEquals("R44444WR", result.getProductId());
@@ -65,7 +65,7 @@ class ProductServiceImplTest {
 
     @Test
     void testFindAll() {
-        List<Product> productList = Arrays.asList(testProductOne, testProductTwo);
+        List<Product> productList = Arrays.asList(testProduct1, testProduct2);
         Iterator<Product> iterator = productList.iterator();
 
         when(productRepository.findAll()).thenReturn(iterator);
@@ -79,11 +79,11 @@ class ProductServiceImplTest {
 
     @Test
     void testUpdateProduct() {
-        when(productRepository.update(testProductOne)).thenReturn(testProductOne);
-        Product updatedProduct = productService.update(testProductOne);
+        when(productRepository.update(testProduct1)).thenReturn(testProduct1);
+        Product updatedProduct = productService.update(testProduct1);
 
         assertEquals("R44444WR", updatedProduct.getProductId());
-        verify(productRepository).update(testProductOne);
+        verify(productRepository).update(testProduct1);
     }
 
     @Test
