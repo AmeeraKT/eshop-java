@@ -41,25 +41,28 @@ class CustomCreateProductTest {
         WebElement quantityInput = driver.findElement(By.id("quantityInput"));
         WebElement submitButton = driver.findElement(By.xpath("//button[contains(text(),'Submit')]"));
 
-        // input product data
         nameInput.sendKeys("Kriuk Kriuk Crickets");
         quantityInput.sendKeys("45");
 
-        // create product
         submitButton.click();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlContains("/product/list"));
 
+        wait.until(ExpectedConditions.urlContains("/product/list"));
         assertTrue(driver.getCurrentUrl().contains("/product/list"));
 
-        List<WebElement> tables = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.tagName("table")));
-        assertFalse(tables.isEmpty(), "Product table should be present on the page");
+        WebElement productTable = wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("table")));
+        assertNotNull(productTable, "Product table should be present on the page");
 
-        WebElement productTable = tables.get(0);
+        WebElement productRow = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[contains(text(),'Kriuk Kriuk Crickets')]")));
+        assertNotNull(productRow, "Product should appear in the table");
+
+        WebElement quantityRow = driver.findElement(By.xpath("//td[contains(text(),'45')]"));
+        assertNotNull(quantityRow, "Product quantity should be visible");
+
         String pageContent = productTable.getText();
-        assertNotNull(pageContent, "Table content should not be null");
         assertTrue(pageContent.contains("Kriuk Kriuk Crickets"));
         assertTrue(pageContent.contains("45"));
     }
+
 }
