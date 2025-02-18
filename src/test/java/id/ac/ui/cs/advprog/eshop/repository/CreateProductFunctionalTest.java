@@ -46,23 +46,29 @@ class CustomCreateProductTest {
 
         submitButton.click();
 
+        // direct to product list page
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
         wait.until(ExpectedConditions.urlContains("/product/list"));
         assertTrue(driver.getCurrentUrl().contains("/product/list"));
 
-        WebElement productTable = wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("table")));
+        // check for table
+        WebElement productTable = wait.until(ExpectedConditions.presenceOfElementLocated(By.className("table")));
         assertNotNull(productTable, "Product table should be present on the page");
 
-        WebElement productRow = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//td[contains(text(),'Kriuk Kriuk Crickets')]")));
-        assertNotNull(productRow, "Product should appear in the table");
+        // check product
+        WebElement productRow = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//div[@class='row']/div[@class='cell' and contains(text(),'Kriuk Kriuk Crickets')]")
+        ));
+        assertNotNull(productRow, "Product name should appear in the table");
 
-        WebElement quantityRow = driver.findElement(By.xpath("//td[contains(text(),'45')]"));
+        // check quantity
+        WebElement quantityRow = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//div[@class='row']/div[@class='cell' and contains(text(),'45')]")
+        ));
         assertNotNull(quantityRow, "Product quantity should be visible");
 
         String pageContent = productTable.getText();
         assertTrue(pageContent.contains("Kriuk Kriuk Crickets"));
         assertTrue(pageContent.contains("45"));
     }
-
 }
