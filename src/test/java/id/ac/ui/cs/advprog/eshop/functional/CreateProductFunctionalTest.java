@@ -1,11 +1,10 @@
-package id.ac.ui.cs.advprog.eshop.repository;
+package id.ac.ui.cs.advprog.eshop.functional;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -14,14 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.time.Duration;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ExtendWith(SeleniumJupiter.class)
-class CustomCreateProductTest {
+class CreateProductFunctionalTest {
 
     @LocalServerPort
     private int serverPort;
@@ -39,26 +37,35 @@ class CustomCreateProductTest {
 
         WebElement nameInput = driver.findElement(By.id("nameInput"));
         WebElement quantityInput = driver.findElement(By.id("quantityInput"));
-        WebElement submitButton = driver.findElement(By.xpath("//button[contains(text(),'Create Product')]"));
+        WebElement submitButton = driver.findElement(By.xpath("//button[contains(text(),'Submit')]"));
 
-        // input product data
         nameInput.sendKeys("Kriuk Kriuk Crickets");
         quantityInput.sendKeys("45");
 
-        // create product
         submitButton.click();
 
+        // direct to product list page
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.urlContains("/product/list"));
-
         assertTrue(driver.getCurrentUrl().contains("/product/list"));
 
-        List<WebElement> tables = driver.findElements(By.tagName("table"));
-        assertFalse(tables.isEmpty(), "Product table should be present on the page");
+        // check for table
+        WebElement productTable = wait.until(ExpectedConditions.presenceOfElementLocated(By.className("table")));
+        assertNotNull(productTable, "Product table should be present on the page");
 
-        WebElement productTable = tables.get(0);
+        // check product
+        WebElement productRow = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//div[@class='row']/div[@class='cell' and contains(text(),'Kriuk Kriuk Crickets')]")
+        ));
+        assertNotNull(productRow, "Product name should appear in the table");
+
+        // check quantity
+        WebElement quantityRow = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//div[@class='row']/div[@class='cell' and contains(text(),'45')]")
+        ));
+        assertNotNull(quantityRow, "Product quantity should be visible");
+
         String pageContent = productTable.getText();
-        assertNotNull(pageContent, "Table content should not be null");
         assertTrue(pageContent.contains("Kriuk Kriuk Crickets"));
         assertTrue(pageContent.contains("45"));
     }
