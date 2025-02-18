@@ -6,7 +6,6 @@ on:
   pull_request:
 
 jobs:
-  name: Run tests
   build:
     runs on: ubuntu-latest
 
