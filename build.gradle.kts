@@ -67,8 +67,10 @@ tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
 
-// JaCoCo tests
+// exclude functional tests
 tasks.test {
+    useJUnitPlatform()
+
     filter {
         excludeTestsMatching("*FunctionalTest")
     }
