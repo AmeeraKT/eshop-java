@@ -39,7 +39,7 @@ class CustomCreateProductTest {
 
         WebElement nameInput = driver.findElement(By.id("nameInput"));
         WebElement quantityInput = driver.findElement(By.id("quantityInput"));
-        WebElement submitButton = driver.findElement(By.xpath("//button[contains(text(),'Create Product')]"));
+        WebElement submitButton = driver.findElement(By.xpath("//button[contains(text(),'Submit')]"));
 
         // input product data
         nameInput.sendKeys("Kriuk Kriuk Crickets");
@@ -53,7 +53,7 @@ class CustomCreateProductTest {
 
         assertTrue(driver.getCurrentUrl().contains("/product/list"));
 
-        List<WebElement> tables = driver.findElements(By.tagName("table"));
+        List<WebElement> tables = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.tagName("table")));
         assertFalse(tables.isEmpty(), "Product table should be present on the page");
 
         WebElement productTable = tables.get(0);
