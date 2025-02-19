@@ -14,6 +14,7 @@ sonar {
         property("sonar.projectKey", "AmeeraKT_eshop-java")
         property("sonar.organization", "ameerakt1313")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.sources", "src/main/java,src/main/resources")
     }
 }
 

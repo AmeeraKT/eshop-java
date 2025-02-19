@@ -12,14 +12,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import org.springframework.ui.Model;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ProductControllerTest {
+class ProductControllerTest {
 
     @Mock
     private ProductService service;
@@ -58,7 +58,7 @@ public class ProductControllerTest {
 
     @Test
     void testListProductPage() {
-        List<Product> productList = Arrays.asList(testProduct3);
+        List<Product> productList = Collections.singletonList(testProduct3);
         when(service.findAll()).thenReturn(productList);
 
         String result = controller.listProductPage(model);
