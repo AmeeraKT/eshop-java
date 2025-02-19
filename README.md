@@ -1,5 +1,6 @@
 App Deployment URL
-genuine-melloney-ameerakt-4ab042d8.koyeb.app/
+
+[genuine-melloney-ameerakt-4ab042d8.koyeb.app/](genuine-melloney-ameerakt-4ab042d8.koyeb.app/)
 
 <details>
 <summary><strong>Module 02</strong></summary>
