@@ -8,7 +8,14 @@ plugins {
 
 group = "id.ac.ui.cs.advprog"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_21
+
+sonar {
+    properties {
+        property("sonar.projectKey", "AmeeraKT_eshop-java")
+        property("sonar.organization", "AmeeraKT")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
+}
 
 java {
     toolchain {
