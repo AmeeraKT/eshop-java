@@ -24,7 +24,7 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Cache SonarCloud Pgackages
+      - name: Cache SonarQube Packages
         uses: actions/cache@v3
         with:
           path: ~/.sonar/cache
@@ -34,7 +34,13 @@ jobs:
       - name: Add gradlew permission
         run: chmod +x gradlew
 
-      - name: Build and Analyze with SonarCloud
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+
+      - name: Build and Analyze with SonarQube
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
