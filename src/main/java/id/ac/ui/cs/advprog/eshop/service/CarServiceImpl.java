@@ -13,8 +13,7 @@ public class CarServiceImpl implements CarService {
 
     @Autowired
     private CarRepository carRepository;
-
-
+    
     @Override
     public Car create (Car car) {
         // TODO Auto-generated method stub
@@ -24,7 +23,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<Car> findAll() {
-        Iterator<car> carIterator = carRepository.findAll();
+        Iterator<Car> carIterator = carRepository.findAll();
         List<Car> allCar = new ArrayList<>();
         carIterator.forEachRemaining (allCar::add);
         return allCar;
