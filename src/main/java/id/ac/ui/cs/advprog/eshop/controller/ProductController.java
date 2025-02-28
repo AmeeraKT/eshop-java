@@ -69,8 +69,13 @@ public class ProductController {
 @RequestMapping("/car")
 class CarController extends ProductController{
 
-    @Autowired
     private CarServiceImpl carservice;
+
+    @Autowired
+    public CarController(ProductService productService, CarServiceImpl carservice) {
+        super(productService); // Call the parent constructor
+        this.carservice = carservice;
+    }
 
     @GetMapping("/createCar")
     public String createCarPage (Model model) {
@@ -111,9 +116,10 @@ class CarController extends ProductController{
         return "redirect:listCar";
     }
 
-    @PostMapping("/deleteCar")
-    public String deleteCar (@RequestParam("carId") String carId) {
+    @GetMapping("/deleteCar/{carId}")
+    public String deleteCar(@PathVariable String carId, Model model) {
         carservice.deleteCarById(carId);
-        return "redirect:listCar";
+
+        return "redirect:/car/listCar";
     }
 }
