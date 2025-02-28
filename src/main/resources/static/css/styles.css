@@ -77,6 +77,25 @@ body {
     border-radius: 10px;
 }
 
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.back-button a {
+    text-decoration: none;
+    background-color: #3f7c71;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.back-button a:hover {
+    background-color: #2d5c54;
+}
+
 .limiter {
     width: 100%;
     margin: 0 auto;

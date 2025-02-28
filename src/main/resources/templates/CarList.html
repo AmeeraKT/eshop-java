@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Car List</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div class="back-button">
+  <a th:href="@{/}">← Back to Home</a>
+</div>
+
+<div class="limiter">
+  <div class="container-table100">
+    <div class="wrap-table100">
+      <h2>Car List</h2>
+      <div class ="center">
+        <a th:href="@{/car/createCar}" class="basic-button">Create Car</a>
+      </div>
+
+      <div class="table">
+        <div class="row header">
+          <div class="cell">Car Name</div>
+          <div class="cell">Car Color</div>
+          <div class="cell">Car Quantity</div>
+          <div class="cell">-</div>
+          <div class="cell">-</div>
+        </div>
+
+        <div class="row" th:each="car: ${cars}">
+          <div class="cell" th:text="${car.carName}" data-title="Car Name"></div>
+          <div class="cell" th:text="${car.carColor}" data-title="Car Color"></div>
+          <div class="cell" th:text="${car.carQuantity}" data-title="Car Quantity"></div>
+          <div class="cell">
+            <a th:href="@{/car/editCar/{id}(id=${car.carId})}" class="btn table-button btn-sm">Edit</a>
+          </div>
+          <div>
+            <a th:href="@{/car/deleteCar/{id}(id=${car.carId})}" class="btn delete-button btn-sm">Delete</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
