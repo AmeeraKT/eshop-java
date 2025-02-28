@@ -3,6 +3,84 @@ App Deployment URL
 [genuine-melloney-ameerakt-4ab042d8.koyeb.app/](genuine-melloney-ameerakt-4ab042d8.koyeb.app/)
 
 <details>
+<summary><strong>Module 03</strong></summary>
+
+### Question 1
+Explain what principles you apply to your project!
+```
+1. The principles I applied to my project are:
+- SRP
+  The single responsibility principle suggests that each module or class in a code must have
+  one and only one function or responsibility. For example, the CarController class used to
+  be an extension of the ProductContoller class and was located in the ProductController file.
+  I moved the CarController class out and into its own file. Resulting in both controllers
+  managing only one module.
+
+- OCP
+  The open closed principle states that classes, modules and functions should be open for
+  extension but closed for modification. I implemented this by creating an interface for
+  the Repositories of Car and Product, did decoupling and added the files CarRepositoryImpl
+  and ProductRepositoryImpl. This way, adding more methods is much more simpler instead of
+  modifying large segments or even the entire file's code.
+
+- DIP
+  The Dependency Inversion Principle states that high-level modules should not depend on
+  low-level modules. Instead they should be depending on abstractions.
+  In my code for example, in the CarRepositoryImpl class, the repository methods depend
+  on the CarRepository interface instead of itself before applying SOLID principles.
+```
+
+### Question 2
+Explain the advantages of applying SOLID principles to your project with examples.
+```
+Improved Readability:
+Moving the CarController into its own file makes it easier for other developers to find it
+and debug it. It also makes it clearer to comprehend how the Repository modules work as the
+list of functions are located in the CarRepository file.
+
+Reduced Test Cases:
+Moving the CarController class out of ProductController means ProductController requires
+less test cases and can have its own test suite. Implementing such test cases are more
+simpler and quicker.
+
+Less Dependencies:
+Implementing decoupling on the previous CarRepository and creating a CarRepositoryImpl
+reduces risk of bugs or errors when modifying or adding more functions.
+
+Improved Extensibility:
+The new ProductRepository and ProductRepositoryImpl enables the addition of functionDes
+
+Enhanced Maintainability:
+Implementing DIP on the Repository modules means, when a bug or error arises, singular
+segments of code can be modified or added to instead of the entire code in the files.
+SRP used for the CarController results in easier debugging as its functions are not associated
+with the ProductController anymore.
+```
+
+### Question 3
+Explain the disadvantages of not applying SOLID principles to your project with examples.
+```
+Low Readability and Maintainability:
+If CarController was not moved into its own file it would be harder to look for it and debug
+it if errors arise.
+
+Less Extensibility:
+If CarRepository did not change and be associated with CarRepositoryImpl, adding more functions
+will require more time and effort as it is less flexible.
+
+Greater and More Complicated Test Cases:
+If CarController was a part of the ProductController file, the test suite will have more test
+cases and it may be more difficult to test since CarController depends on the ProductController class.
+
+Higher Risk of Bugs or Errors:
+Increased dependencies of modules may result in bugs or errors if they are modified or extended
+as the code is usually less readable due to its large size which results in more complicated code.
+For example, debugging a CarRepository that has not been decoupled yet.
+```
+</details>
+
+
+<details>
 <summary><strong>Module 02</strong></summary>
 
 ### Part 1
