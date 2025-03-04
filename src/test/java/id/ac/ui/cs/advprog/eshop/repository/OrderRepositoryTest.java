@@ -14,14 +14,14 @@ import java.util.ArrayList;
 
 class OrderRepositoryTest {
 
-    OrderRepository orderRepository = new OrderRepositoryImpl();
+    OrderRepository orderRepository = new OrderRepository();
 
     List<Order> orders;
 
     @BeforeEach
     void setUp() {
 
-        orderRepository = new OrderRepositoryImpl();
+        orderRepository = new OrderRepository();
 
         List<Product> products = new ArrayList<>();
         Product product1 = new Product();

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 @Repository
-public class OrderRepositoryImpl implements OrderRepository {
+public class OrderRepositoryImpl {
 
     private List<Order> orderData = new ArrayList<>();
 
