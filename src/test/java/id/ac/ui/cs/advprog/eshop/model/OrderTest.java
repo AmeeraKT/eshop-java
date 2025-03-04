@@ -1,5 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
+import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,17 +56,17 @@ public class OrderTest {
         assertEquals( "13652556-012a-4c07-b546-54eb1396d79b", order.getId());
         assertEquals( 1708560000L, order.getOrderTime());
         assertEquals( "Safira Sudrajat", order.getAuthor());
-        assertEquals( "WAITING_PAYMENT", order.getStatus());
+        assertEquals( OrderStatus.WAITING_PAYMENT.getValue(), order.getStatus());
     }
 
     // happy: create order with status "SUCCESS"
     @Test
     void testCreateOrderSuccessStatus() {
         Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, 1708560000L, "Safira Sudrajat", "SUCCESS");
-        assertEquals( "SUCCESS", order.getStatus());
+                this.products, 1708560000L, "Safira Sudrajat",
+                OrderStatus.SUCCESS.getValue());
+        assertEquals(OrderStatus.SUCCESS.getValue(), order.getStatus());
     }
-
 
     // unhappy: create order with invalid status
     @Test
@@ -79,9 +81,9 @@ public class OrderTest {
     @Test
     void testSetStatusToCancelled(){
         Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, 1708560000L, "Safira Sudrajat");
-        order.setStatus("CANCELLED");
-        assertEquals("CANCELLED", order.getStatus());
+                this.products, 1708560000L, "Safira Sudrajat",
+                OrderStatus.CANCELLED.getValue());
+        assertEquals(OrderStatus.CANCELLED.getValue(), order.getStatus());
     }
 
     // unhappy: test edit order with invalid status
@@ -91,6 +93,4 @@ public class OrderTest {
                 this.products, 1708560000L, "Safira Sudrajat");
         assertThrows(IllegalArgumentException.class, () -> order.setStatus("MEOW"));
     }
-
-
 }
