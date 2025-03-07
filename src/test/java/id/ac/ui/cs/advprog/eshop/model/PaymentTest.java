@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PaymentTest {
 
@@ -20,9 +19,21 @@ public class PaymentTest {
     private Order order;
     private Payment payment;
     private Map<String, String> paymentData;
+    private Map<String, String> validVoucherData;
+    private Map<String, String> invalidVoucherData;
+
 
     @BeforeEach
     void setUp() {
+
+        this.paymentData = new HashMap<String, String>();
+
+        validVoucherData = new HashMap<>();
+        validVoucherData.put("voucherCode", "ESHOP1234ABC5678");
+
+        invalidVoucherData = new HashMap<>();
+        invalidVoucherData.put("voucherCode", "NOTESHOP1234ABC5678");
+
         // product dummy data
         List<Product> products = new ArrayList<>();
         Product product1 = new Product();
@@ -79,5 +90,25 @@ public class PaymentTest {
         Payment payment = new Payment("PAYMENT-01", PaymentMethod.VOUCHER.getMethod(), PaymentStatus.SUCCESS.getStatus(), paymentData);
 
         assertEquals("voucherCode", payment.getMethod());
+    }
+
+    // happy: create payment with valid voucher
+    @Test
+    void testCreatePaymentWithValidVoucher() {
+        Payment payment = new Payment("PAYMENT-01", PaymentMethod.VOUCHER.getMethod(), PaymentStatus.SUCCESS.getStatus(), validVoucherData);
+
+        assertNotNull(payment);
+        assertEquals(PaymentMethod.VOUCHER.getMethod(), payment.getMethod());
+        assertEquals(PaymentStatus.SUCCESS.getStatus(), payment.getStatus());
+        assertEquals("ESHOP1234ABC5678", payment.getPaymentData().get("voucherCode"));
+    }
+
+    // unhappy: create payment with invalid voucher
+    @Test
+    void testCreatePaymentWithInvalidVoucher() {
+        Payment payment = new Payment("PAYMENT-01", PaymentMethod.VOUCHER.getMethod(), PaymentStatus.REJECTED.getStatus(), invalidVoucherData);
+
+        assertEquals(PaymentMethod.VOUCHER.getMethod(), payment.getMethod());
+        assertEquals(PaymentStatus.REJECTED.getStatus(), payment.getStatus());
     }
 }
