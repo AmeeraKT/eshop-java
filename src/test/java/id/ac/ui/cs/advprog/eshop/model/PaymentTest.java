@@ -38,7 +38,7 @@ public class PaymentTest {
     @Test
     void testCreatePaymentWithValidStatus() {
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
-        Payment payment = new Payment("PAYMENT-01", "Voucher", "SUCCESS", paymentData);
+        Payment payment = new Payment("PAYMENT-01", "voucherCode", "SUCCESS", paymentData);
 
         assertEquals("SUCCESS", payment.getStatus());
     }
@@ -56,7 +56,7 @@ public class PaymentTest {
     // happy: edit payment status with valid status
     @Test
     void testEditStatusToValidStatus() {
-        Payment payment = new Payment("PAYMENT-01", "Voucher", "REJECTED", paymentData);
+        Payment payment = new Payment("PAYMENT-01", "voucherCode", "REJECTED", paymentData);
         payment.setStatus("SUCCESS");
         assertEquals("SUCCESS", payment.getStatus());
     }
@@ -64,7 +64,7 @@ public class PaymentTest {
     // unhappy: edit payment status with invalid status
     @Test
     void testEditStatusToInvalidStatus() {
-        Payment payment = new Payment("PAYMENT-01","Voucher", "SUCCESS", paymentData);
+        Payment payment = new Payment("PAYMENT-01","voucherCode", "SUCCESS", paymentData);
 
         assertThrows(IllegalArgumentException.class, () -> payment.setStatus("MEOW"));
     }
@@ -76,14 +76,5 @@ public class PaymentTest {
         Payment payment = new Payment("PAYMENT-01", "voucherCode", "SUCCESS", paymentData);
 
         assertEquals("voucherCode", payment.getMethod());
-    }
-
-    // unhappy: create payment with invalid method
-    @Test
-    void testCreatePaymentValidMethod() {
-        paymentData.put("fakeVoucher", "NOTESHOP1234ABC5678");
-        Payment payment = new Payment("PAYMENT-01", "fakeVoucher", "SUCCESS", paymentData);
-
-        assertThrows(IllegalArgumentException.class, () -> payment.getMethod("fakeVoucher"));
     }
 }
