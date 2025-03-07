@@ -1,8 +1,9 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,62 +14,49 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class PaymentTest {
 
     private List<Product> products;
-    private List<Order> orders;
+    private Order order;
+    private Payment payment;
+    private Map<String, String> paymentData;
 
     @BeforeEach
     void setUp() {
         // product dummy data
-        this.products = new ArrayList<>();
-
+        List<Product> products = new ArrayList<>();
         Product product1 = new Product();
         product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
         product1.setProductName("Sampo Cap Bambang");
         product1.setProductQuantity(2);
-
-        Product product2 = new Product();
-        product2.setProductId("a2c62328-4a37-4664-83c7-f32db8620155");
-        product2.setProductName("Sabun Cap Usep");
-        product2.setProductQuantity(1);
-        this.products.add(product1);
-        this.products.add(product2);
+        products.add(product1);
 
         // dummy order data
-        this.orders = new ArrayList<>();
+        order = new Order("ORDER-O1", products, 1708560000L, "John Doe");
 
-        Order order1 = new Order();
-        order1.setId("ORDER-01");
-        order1 = new Order("ORDER-01", this.products, 1708560000L, "John Doe");
-    }
-
-    // unhappy: create payment for nonexistent order
-    @Test
-    void testCreatePaymentForNonexistentOrder() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            Payment payment = new Payment("PAYMENT-01", null, "SUCCESS");
-        });
-    }
-
-    // unhappy: create payment with invalid status
-    @Test
-    void testCreatePaymentWithInvalidStatus() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            Payment payment = new Payment("PAYMENT-01", order, "MEOW");
-        });
+        this.paymentData = new HashMap<String, String>();
     }
 
     // happy: create payment with valid status
     @Test
     void testCreatePaymentWithValidStatus() {
-        Payment payment = new Payment("PAYMENT-01", order, "SUCCESS");
-        assertEquals("PAYMENT-01", payment.getPaymentId());
-        assertEquals(order, payment.getOrder());
+        paymentData.put("voucherCode", "ESHOP1234ABC5678");
+        Payment payment = new Payment("PAYMENT-01", "Voucher", "SUCCESS", paymentData);
+
         assertEquals("SUCCESS", payment.getStatus());
+    }
+
+    // unhappy: create payment with invalid status
+    @Test
+    void testCreatePaymentWithInvalidStatus() {
+        paymentData.put("voucherCode", "NOTESHOP1234ABC5678");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            Payment payment = new Payment("PAYMENT-01", "voucherCode", "MEOW", paymentData);
+        });
     }
 
     // happy: edit payment status with valid status
     @Test
     void testEditStatusToValidStatus() {
-        Payment payment = new Payment("PAYMENT-1", order, "REJECTED");
+        Payment payment = new Payment("PAYMENT-01", "Voucher", "REJECTED", paymentData);
         payment.setStatus("SUCCESS");
         assertEquals("SUCCESS", payment.getStatus());
     }
@@ -76,25 +64,26 @@ public class PaymentTest {
     // unhappy: edit payment status with invalid status
     @Test
     void testEditStatusToInvalidStatus() {
-        Payment payment = new Payment("PAYMENT-01", order, "SUCCESS");
+        Payment payment = new Payment("PAYMENT-01","Voucher", "SUCCESS", paymentData);
+
         assertThrows(IllegalArgumentException.class, () -> payment.setStatus("MEOW"));
     }
 
-    // happy: check if order status changes to "SUCCESS"
-    // if payment status is "SUCCESS"
+    // happy: create payment with valid method
     @Test
-    void testOrderStatusChangesToSuccess() {
-        Payment payment = new Payment("PAYMENT-01", order, "SUCCESS");
-        assertEquals("SUCCESS", payment.getStatus());
-        assertEquals("SUCCESS", order.getStatus());
+    void testCreatePaymentValidMethod() {
+        paymentData.put("voucherCode", "ESHOP1234ABC5678");
+        Payment payment = new Payment("PAYMENT-01", "voucherCode", "SUCCESS", paymentData);
+
+        assertEquals("voucherCode", payment.getMethod());
     }
 
-    // happy: check if order status changes to "FAILED"
-    // if payment status is "REJECTED"
+    // unhappy: create payment with invalid method
     @Test
-    void testOrderStatusChangesToFailed() {
-        Payment payment = new Payment("PAYMENT-01", order, "REJECTED");
-        assertEquals("REJECTED", payment.getStatus());
-        assertEquals("FAILED", order.getStatus());
+    void testCreatePaymentValidMethod() {
+        paymentData.put("fakeVoucher", "NOTESHOP1234ABC5678");
+        Payment payment = new Payment("PAYMENT-01", "fakeVoucher", "SUCCESS", paymentData);
+
+        assertThrows(IllegalArgumentException.class, () -> payment.getMethod("fakeVoucher"));
     }
 }
