@@ -3,6 +3,9 @@ package id.ac.ui.cs.advprog.eshop.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import enums.PaymentStatus;
+import enums.PaymentMethod;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -15,16 +18,16 @@ public class Payment {
     String status;
     Map<String, String> paymentData;
 
-    private List<String> validMethod = Arrays.asList("voucherCode", "address", "deliveryFee");
-    private List<String> validStatus = Arrays.asList("SUCCESS", "REJECTED");
+    private static final List<String> validMethod = Arrays.asList("voucherCode", "address", "deliveryFee");
 
     public Payment(String id, String method, String status, Map<String, String> paymentData) {
-        if (!validMethod.contains(method)) {
-            throw new IllegalArgumentException();
+
+        if (!PaymentMethod.contains(method)) {
+            throw new IllegalArgumentException("Invalid payment method: " + method);
         }
 
-        if (!validStatus.contains(status)) {
-            throw new IllegalArgumentException();
+        if (!PaymentStatus.contains(status)) {
+            throw new IllegalArgumentException("Invalid payment status: " + status);
         }
 
         this.id = id;
@@ -34,7 +37,7 @@ public class Payment {
     }
 
     public void setStatus(String status) {
-        if (validStatus.contains(status)) {
+        if (PaymentStatus.contains(status)) {
             this.status = status;
         } else {
             throw new IllegalArgumentException();
