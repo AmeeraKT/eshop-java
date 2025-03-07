@@ -1,7 +1,7 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
-import enums.PaymentMethod;
-import enums.PaymentStatus;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class PaymentTest {
         // dummy order data
         order = new Order("ORDER-O1", products, 1708560000L, "John Doe");
 
-        this.paymentData = new HashMap<String, String>();
+        this.paymentData = new HashMap<>();
     }
 
     // happy: create payment with valid status
