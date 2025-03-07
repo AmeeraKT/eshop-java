@@ -12,7 +12,6 @@ import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
 
 import java.util.*;
 
-import org.checkerframework.framework.qual.NoQualifierParameter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
