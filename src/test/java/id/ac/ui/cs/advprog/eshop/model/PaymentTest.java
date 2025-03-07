@@ -38,8 +38,6 @@ public class PaymentTest {
         Order order1 = new Order();
         order1.setId("ORDER-01");
         order1 = new Order("ORDER-01", this.products, 1708560000L, "John Doe");
-
-        Order order2 = new Ord
     }
 
     // unhappy: create payment for nonexistent order
