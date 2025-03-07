@@ -3,10 +3,9 @@ package id.ac.ui.cs.advprog.eshop.model;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class PaymentTest {
 
     private List<Product> products;
-    private Order order;
+    private List<Order> orders;
 
     @BeforeEach
     void setUp() {
@@ -34,7 +33,13 @@ public class PaymentTest {
         this.products.add(product2);
 
         // dummy order data
-        this.order = new Order("OREDER-01", this.products, 1708560000L, "John Doe");
+        this.orders = new ArrayList<>();
+
+        Order order1 = new Order();
+        order1.setId("ORDER-01");
+        order1 = new Order("ORDER-01", this.products, 1708560000L, "John Doe");
+
+        Order order2 = new Ord
     }
 
     // unhappy: create payment for nonexistent order
