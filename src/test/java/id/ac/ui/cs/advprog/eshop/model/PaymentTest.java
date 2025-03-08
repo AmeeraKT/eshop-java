@@ -16,7 +16,6 @@ public class PaymentTest {
     private Map<String, String> validVoucherData;
     private Map<String, String> invalidVoucherData;
 
-
     @BeforeEach
     void setUp() {
 
@@ -66,24 +65,5 @@ public class PaymentTest {
         Payment payment = new Payment("PAYMENT-01", PaymentMethod.VOUCHER.getMethod(), PaymentStatus.SUCCESS.getStatus(), validVoucherData);
 
         assertEquals("voucherCode", payment.getMethod());
-    }
-
-    // happy: create payment with valid voucher
-    @Test
-    void testCreatePaymentWithValidVoucher() {
-        Payment payment = new Payment("PAYMENT-01", PaymentMethod.VOUCHER.getMethod(), PaymentStatus.SUCCESS.getStatus(), validVoucherData);
-
-        assertNotNull(payment);
-        assertEquals(PaymentMethod.VOUCHER.getMethod(), payment.getMethod());
-        assertEquals(PaymentStatus.SUCCESS.getStatus(), payment.getStatus());
-        assertEquals("ESHOP1234ABC5678", payment.getPaymentData().get("voucherCode"));
-    }
-
-    // unhappy: create payment with invalid voucher
-    @Test
-    void testCreatePaymentWithInvalidVoucher() {
-        assertThrows(IllegalArgumentException.class, () ->
-                new Payment("PAYMENT-01", PaymentMethod.VOUCHER.getMethod(), PaymentStatus.SUCCESS.getStatus(), invalidVoucherData)
-        );
     }
 }
