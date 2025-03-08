@@ -18,7 +18,6 @@ public class PaymentVoucherTest {
 
     @BeforeEach
     void setUp() {
-
         validVoucherData = new HashMap<>();
         validVoucherData.put("voucherCode", "ESHOP1234ABC5678");
 
@@ -29,19 +28,25 @@ public class PaymentVoucherTest {
     // happy: create payment with valid voucher
     @Test
     void testCreatePaymentWithValidVoucher() {
-        Payment payment = new Payment("PAYMENT-01", PaymentMethod.VOUCHER.getMethod(), PaymentStatus.SUCCESS.getStatus(), validVoucherData);
+        PaymentVoucher payment = new PaymentVoucher("PAYMENT-01", validVoucherData);
 
         assertNotNull(payment);
         assertEquals(PaymentMethod.VOUCHER.getMethod(), payment.getMethod());
-        assertEquals(PaymentStatus.SUCCESS.getStatus(), payment.getStatus());
+        assertEquals(PaymentStatus.PENDING.getStatus(), payment.getStatus()); // Default status is PENDING
         assertEquals("ESHOP1234ABC5678", payment.getPaymentData().get("voucherCode"));
     }
 
     // unhappy: create payment with invalid voucher
     @Test
     void testCreatePaymentWithInvalidVoucher() {
-        assertThrows(IllegalArgumentException.class, () ->
-                new Payment("PAYMENT-01", PaymentMethod.VOUCHER.getMethod(), PaymentStatus.SUCCESS.getStatus(), invalidVoucherData)
-        );
+        PaymentVoucher payment = new PaymentVoucher("PAYMENT-02", invalidVoucherData);
+        assertEquals(PaymentStatus.REJECTED.getStatus(), payment.getStatus()); // Should be REJECTED
+    }
+
+    // unhappy: create payment without voucher code
+    @Test
+    void testCreatePaymentWithoutVoucherCode() {
+        Map<String, String> emptyData = new HashMap<>();
+        assertThrows(IllegalArgumentException.class, () -> new PaymentVoucher("PAYMENT-03", emptyData));
     }
 }
