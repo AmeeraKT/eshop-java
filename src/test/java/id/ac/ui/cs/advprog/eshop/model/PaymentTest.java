@@ -66,4 +66,12 @@ public class PaymentTest {
 
         assertEquals("voucherCode", payment.getMethod());
     }
+
+    // unhappy: create payment with invalid method
+    @Test
+    void testCreatePaymentWithInvalidMethod() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            Payment payment = new Payment("PAYMENT-01", "MEOW", PaymentStatus.SUCCESS.getStatus(), validVoucherData);
+        });
+    }
 }
