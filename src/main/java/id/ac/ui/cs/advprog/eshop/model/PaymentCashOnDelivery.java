@@ -13,11 +13,12 @@ public class PaymentCashOnDelivery extends Payment {
 
     public PaymentCashOnDelivery(String id, Map<String, String> paymentData) {
         super(id, PaymentMethod.CASH_ON_DELIVERY.getMethod(), PaymentStatus.PENDING.getStatus(), paymentData);
-        validatePayment(paymentData);
 
         if (paymentData == null || paymentData.isEmpty()) {
             throw new IllegalArgumentException("Payment data cannot be empty for Cash On Delivery");
         }
+
+        validatePayment(paymentData);
 
         if (!validateCOD(paymentData)) {
             this.setStatus(PaymentStatus.REJECTED.getStatus());

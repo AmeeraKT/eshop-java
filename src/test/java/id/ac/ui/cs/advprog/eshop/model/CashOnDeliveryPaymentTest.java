@@ -82,4 +82,9 @@ public class CashOnDeliveryPaymentTest {
         PaymentCashOnDelivery payment = new PaymentCashOnDelivery("PAYMENT-01", invalidCODData);
         assertEquals(PaymentStatus.REJECTED.getStatus(), payment.getStatus());
     }
+
+    @Test
+    void testCashOnDeliveryPaymentWithNullData() {
+        assertThrows(IllegalArgumentException.class, () -> new PaymentCashOnDelivery("PAYMENT-03", null));
+    }
 }
