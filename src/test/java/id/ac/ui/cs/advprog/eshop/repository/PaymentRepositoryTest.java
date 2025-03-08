@@ -75,4 +75,49 @@ public class PaymentRepositoryTest {
 
         assertNull(findResult);
     }
+
+    // Test saving an existing payment to cover loop iteration
+    @Test
+    void testSaveUpdateExistingPayment() {
+        paymentRepository.save(testPayment);
+
+        Payment updatedPayment = new Payment(testPayment.getId(), PaymentMethod.VOUCHER.getMethod(),
+                PaymentStatus.REJECTED.getStatus(), paymentData);
+
+        Payment result = paymentRepository.save(updatedPayment);
+
+        assertEquals(updatedPayment.getId(), result.getId());
+        assertEquals(PaymentStatus.REJECTED.getStatus(), result.getStatus());
+        assertEquals(PaymentMethod.VOUCHER.getMethod(), result.getMethod());
+    }
+
+    // Test findById to ensure loop iteration covers finding an existing ID
+    @Test
+    void testFindByIdCoversLoop() {
+        paymentRepository.save(testPayment);
+
+        Payment anotherPayment = new Payment("PAYMENT-02", PaymentMethod.CASH_ON_DELIVERY.getMethod(),
+                PaymentStatus.SUCCESS.getStatus(), paymentData);
+        paymentRepository.save(anotherPayment);
+
+        Payment findResult = paymentRepository.findById("PAYMENT-02");
+
+        assertNotNull(findResult);
+        assertEquals("PAYMENT-02", findResult.getId());
+        assertEquals(PaymentMethod.CASH_ON_DELIVERY.getMethod(), findResult.getMethod());
+    }
+
+    // Test findAll to ensure it returns all stored payments
+    @Test
+    void testFindAllCoversReturnedList() {
+        assertTrue(paymentRepository.findAll().isEmpty());
+
+        paymentRepository.save(testPayment);
+
+        Payment anotherPayment = new Payment("PAYMENT-02", PaymentMethod.VOUCHER.getMethod(),
+                PaymentStatus.SUCCESS.getStatus(), paymentData);
+        paymentRepository.save(anotherPayment);
+
+        assertEquals(2, paymentRepository.findAll().size());
+    }
 }
