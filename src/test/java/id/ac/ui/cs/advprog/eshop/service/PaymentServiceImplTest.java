@@ -77,7 +77,7 @@ public class PaymentServiceImplTest {
     @Test
     void testAddPaymentWithValidVoucher() {
         when(paymentRepository.save(any(Payment.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0)); // Return the actual Payment object
+                .thenAnswer(invocation -> invocation.getArgument(0));
 
         Payment result = paymentService.addPayment(order, PaymentMethod.VOUCHER.getMethod(), validVoucherData);
 
@@ -179,5 +179,55 @@ public class PaymentServiceImplTest {
         List<Payment> result = paymentService.getAllPayments();
 
         assertEquals(1, result.size());
+    }
+
+    // unhappy: add payment when a successful payment already exists
+    @Test
+    void testAddPaymentAlreadySuccessfulPayment() {
+        Map<String, String> paymentData = new HashMap<>();
+        Payment successfulPayment = new Payment("PAYMENT-01", PaymentMethod.VOUCHER.getMethod(), PaymentStatus.SUCCESS.getStatus(), paymentData);
+        when(paymentRepository.findById(anyString())).thenReturn(successfulPayment);
+
+        Payment result = paymentService.addPayment(order, PaymentMethod.VOUCHER.getMethod(), paymentData);
+        assertNull(result);
+    }
+
+    // unhappy: set payment status to REJECTED and check if order status changes to FAILED
+    @Test
+    void testSetStatusRejectedPayment() {
+        Payment payment = new Payment("PAYMENT-01", PaymentMethod.VOUCHER.getMethod(), PaymentStatus.PENDING.getStatus(), new HashMap<>());
+
+        when(paymentRepository.findById(payment.getId())).thenReturn(payment);
+        when(orderRepository.findById(payment.getId())).thenReturn(order);
+        Payment updatedPayment = paymentService.setStatus(payment, "REJECTED");
+
+        assertEquals(PaymentStatus.REJECTED.getStatus(), updatedPayment.getStatus());
+        verify(orderRepository).save(argThat(savedOrder -> "FAILED".equals(savedOrder.getStatus())));
+    }
+
+    // unhappy: add payment when no existing payment is found
+    @Test
+    void testAddPaymentWhenNoExistingPayment() {
+        when(paymentRepository.findById(anyString())).thenReturn(null); // No payment found
+
+        Payment result = paymentService.addPayment(order, PaymentMethod.VOUCHER.getMethod(), validVoucherData);
+
+        assertNotNull(result);
+        assertEquals(PaymentStatus.PENDING.getStatus(), result.getStatus());
+        verify(paymentRepository).save(any(Payment.class));
+    }
+
+    // unhappy: add payment when an existing payment has REJECTED status
+    @Test
+    void testAddPaymentWhenExistingPaymentIsRejected() {
+        Payment existingPayment = new Payment("PAYMENT-01", PaymentMethod.VOUCHER.getMethod(), PaymentStatus.REJECTED.getStatus(), validVoucherData);
+
+        when(paymentRepository.findById(anyString())).thenReturn(existingPayment);
+
+        Payment result = paymentService.addPayment(order, PaymentMethod.VOUCHER.getMethod(), validVoucherData);
+
+        assertNotNull(result);
+        assertEquals(PaymentStatus.PENDING.getStatus(), result.getStatus());
+        verify(paymentRepository).save(any(Payment.class));
     }
 }
