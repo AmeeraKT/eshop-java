@@ -33,6 +33,7 @@ public class Payment {
         this.status = status;
         this.paymentData = paymentData;
 
+        // logic for changing status
         if (PaymentMethod.VOUCHER.getMethod().equals(method) && !validateVoucher(paymentData.get("voucherCode"))) {
             this.status = PaymentStatus.REJECTED.getStatus();
         } else {
