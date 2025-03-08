@@ -16,7 +16,7 @@ public class CarRepositoryImpl implements CarRepository {
     @Override
     public Car create(Car car) {
         if (car.getCarId() == null) {
-            car.setCarId(UUID.randomUUID().toString());
+            throw new IllegalArgumentException("Car ID cannot be null!");
         }
         carData.add(car);
         return car;
