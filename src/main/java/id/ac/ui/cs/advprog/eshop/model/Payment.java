@@ -6,22 +6,20 @@ import lombok.Setter;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 @Getter
 @Setter
 public class Payment {
+
     String id;
     String method;
     String status;
     Map<String, String> paymentData;
 
-    private static final List<String> validMethod = Arrays.asList("voucherCode", "address", "deliveryFee");
-
     public Payment(String id, String method, String status, Map<String, String> paymentData) {
 
+        validatePayment(method, paymentData);
         if (!PaymentMethod.contains(method)) {
             throw new IllegalArgumentException("Invalid payment method: " + method);
         }
@@ -34,6 +32,12 @@ public class Payment {
         this.method = method;
         this.status = status;
         this.paymentData = paymentData;
+
+        if (PaymentMethod.VOUCHER.getMethod().equals(method) && !validateVoucher(paymentData.get("voucherCode"))) {
+            this.status = PaymentStatus.REJECTED.getStatus();
+        } else {
+            this.status = status;
+        }
     }
 
     public void setStatus(String status) {
@@ -41,6 +45,29 @@ public class Payment {
             this.status = status;
         } else {
             throw new IllegalArgumentException();
+        }
+    }
+
+    public boolean validateVoucher(String voucherCode) {
+        return voucherCode != null &&
+        // code feature rules
+                voucherCode.length() == 16 &&
+                voucherCode.startsWith("ESHOP") &&
+                voucherCode.replaceAll("[^0-9]", "").length() == 8;
+    }
+
+    public void validatePayment(String method, Map<String, String> paymentData) {
+        if (PaymentMethod.VOUCHER.getMethod().equals(method)) {
+
+            if (paymentData == null || !paymentData.containsKey("voucherCode")) {
+                throw new IllegalArgumentException("Voucher code is required for VOUCHER payment");
+            }
+
+            String voucherCode = paymentData.get("voucherCode");
+
+            if (!validateVoucher(voucherCode)) {
+                throw new IllegalArgumentException("Invalid voucher code: " + voucherCode);
+            }
         }
     }
 }
