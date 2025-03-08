@@ -12,18 +12,29 @@ import java.util.Map;
 public class PaymentCashOnDelivery extends Payment {
 
     public PaymentCashOnDelivery(String id, Map<String, String> paymentData) {
-        return null;
+        super(id, PaymentMethod.CASH_ON_DELIVERY.getMethod(), PaymentStatus.PENDING.getStatus(), paymentData);
+        validatePayment(paymentData);
+
+        if (paymentData == null || paymentData.isEmpty()) {
+            throw new IllegalArgumentException("Payment data cannot be empty for Cash On Delivery");
+        }
+
+        if (!validateCOD(paymentData)) {
+            this.setStatus(PaymentStatus.REJECTED.getStatus());
+        }
     }
 
     private void validatePayment(Map<String, String> paymentData) {
-        return null;
+        if (!validateCOD(paymentData)) {
+            this.status = PaymentStatus.REJECTED.getStatus();
+        }
     }
 
     private boolean validateCOD(Map<String, String> paymentData) {
-        return null;
+        return validateField(paymentData, "address") && validateField(paymentData, "deliveryFee");
     }
 
     private boolean validateField(Map<String, String> data, String key) {
-        return null;
+        return data.get(key) != null && !data.get(key).trim().isEmpty();
     }
 }
